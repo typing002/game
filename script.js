@@ -1,103 +1,100 @@
-﻿const quotes = [
+const sushiNames = [
   "寿司",
   "マグロ",
   "サーモン",
   "エビ",
   "イカ",
-  "ヤマシタ",
-  "ツインターボ",
-  "マッキー",
-  "ニシカワ",
-  "ヤマダ"
+  "タコ",
+  "ユニ",
+  "アナゴ",
+  "ハマチ",
+  "サバ"
+  "キッズ"
+  "障害"
+  "ゆうと"
+  "タイムアイ"
 ];
 
-
-let currentQuoteIndex = 0;
+let currentSushiIndex = 0;
 let score = 0;
 let timer;
 let timeRemaining;
 
-
-const quoteElement = document.getElementById("quote");
+const sushiElement = document.getElementById("sushi");
 const inputElement = document.getElementById("input");
 const scoreElement = document.getElementById("score");
-const timerElement = document.getElementById("timer");
-
 
 inputElement.addEventListener("input", checkInput);
 
-
 function startGame() {
-  currentQuoteIndex = 0;
+  currentSushiIndex = 0;
   score = 0;
   timeRemaining = 60;
   inputElement.value = "";
-  scoreElement.textContent = "スコア: 0";
-  timerElement.textContent = "残り時間: 60秒";
+  scoreElement.textContent = "0";
+  inputElement.disabled = false;
   inputElement.focus();
-  showNextQuote();
+  showNextSushi();
   startTimer();
+  document.getElementById("start-button").disabled = true;
 }
 
-
-function showNextQuote() {
-  if (currentQuoteIndex >= quotes.length) {
+function showNextSushi() {
+  if (currentSushiIndex >= sushiNames.length) {
     endGame();
     return;
   }
 
-
-  quoteElement.textContent = quotes[currentQuoteIndex];
+  sushiElement.textContent = sushiNames[currentSushiIndex];
 }
-
 
 function checkInput() {
   const typedText = inputElement.value.trim();
-  const currentQuote = quotes[currentQuoteIndex];
+  const currentSushi = sushiNames[currentSushiIndex];
 
+  const hiraganaCurrentSushi = convertToHiragana(currentSushi);
+  const hiraganaTypedText = convertToHiragana(typedText);
 
-  if (typedText === currentQuote) {
+  if (hiraganaTypedText === hiraganaCurrentSushi) {
     inputElement.classList.remove("incorrect");
     inputElement.classList.add("correct");
     score++;
-    scoreElement.textContent = `スコア: ${score}`;
-    currentQuoteIndex++;
+    scoreElement.textContent = score;
+    currentSushiIndex++;
     inputElement.value = "";
-    showNextQuote();
+    showNextSushi();
   } else {
     inputElement.classList.remove("correct");
     inputElement.classList.add("incorrect");
   }
 }
 
-
 function startTimer() {
   timer = setInterval(updateTimer, 1000);
 }
 
-
 function updateTimer() {
   timeRemaining--;
-  timerElement.textContent = `残り時間: ${timeRemaining}秒`;
-
+  document.getElementById("timer").textContent = `残り時間: ${timeRemaining}秒`;
 
   if (timeRemaining <= 0) {
     endGame();
   }
 }
 
-
 function endGame() {
   clearInterval(timer);
   inputElement.disabled = true;
-
+  document.getElementById("start-button").disabled = false;
 
   alert(`ゲーム終了！\nスコア: ${score}`);
-
-
-  inputElement.disabled = false;
-  startGame();
 }
 
+function convertToHiragana(text) {
+  return text.replace(/[\u30a1-\u30f6]/g, function(match) {
+    const charCode = match.charCodeAt(0) - 0x60;
+    return String.fromCharCode(charCode);
+  });
+}
 
 startGame();

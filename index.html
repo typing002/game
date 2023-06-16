@@ -1,18 +1,20 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
-  <title>タイピング</title>
+  <title>タイピングゲーム</title>
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-  <h1>タイピングゲーム!!!!!!!!!!!!!</h1>
+  <h1>タイピングゲーム</h1>
   <div id="game-container">
-    <p id="score">スコア: 0</p>
-    <p id="timer">残り時間: 60秒</p>
+    <div id="score-container">
+      <p id="score-label">スコア:</p>
+      <p id="score">0</p>
+    </div>
     <p id="quote"></p>
-    <input type="text" id="input" autofocus>
+    <input type="text" id="input" disabled>
+    <button id="start-button" onclick="startGame()">スタート</button>
   </div>
-
 
   <script src="script.js"></script>
 </body>

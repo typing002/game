@@ -786,6 +786,7 @@ let timeRemaining;
 const sushiElement = document.getElementById("sushi");
 const inputElement = document.getElementById("input");
 const scoreElement = document.getElementById("score");
+const progressElement = document.getElementById("progress");
 
 inputElement.addEventListener("input", checkInput);
 
@@ -797,6 +798,7 @@ function startGame() {
   scoreElement.textContent = "0";
   inputElement.disabled = false;
   inputElement.focus();
+  progressElement.textContent = "";
   showNextSushi();
   startTimer();
   document.getElementById("start-button").disabled = true;
@@ -830,6 +832,8 @@ function checkInput() {
     inputElement.classList.remove("correct");
     inputElement.classList.add("incorrect");
   }
+  
+  progressElement.textContent = typedText;
 }
 
 function startTimer() {

@@ -1,21 +1,301 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>タイピングゲーム</title>
-  <link rel="stylesheet" type="text/css" href="style.css">
+    <title>タイピングゲーム</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f2f2f2;
+            font-family: Arial, sans-serif;
+        }
+
+
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+
+
+        input {
+            margin-top: 20px;
+            font-size: 24px;
+            padding: 5px 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+
+        button {
+            margin-top: 20px;
+            font-size: 20px;
+            padding: 10px 20px;
+            border-radius: 4px;
+            background-color: #4caf50;
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+        }
+
+
+        button:disabled {
+            background-color: #aaaaaa;
+            cursor: not-allowed;
+        }
+
+
+        #scoreResult {
+            font-size: 36px;
+            font-weight: bold;
+            margin-top: 50px;
+        }
+
+
+        .button-container {
+            margin-top: 20px;
+        }
+
+
+        .button-container button {
+            margin-right: 10px;
+        }
+    </style>
 </head>
 <body>
-  <h1>タイピングゲーム</h1>
-  <div id="game-container">
-    <div id="score-container">
-      <p id="score-label">スコア:</p>
-      <p id="score">0</p>
+    <div class="container">
+        <h1>タイピングゲーム</h1>
+        <h1 id="question"></h1>
+        <input type="text" id="input" autofocus>
+        <p>スコア: <span id="score">0</span></p>
+        <p>残り時間: <span id="timer">60</span>秒</p>
+        <button id="startButton">スタート</button>
+        <button id="restartButton" style="display: none;">リスタート</button>
+        <div id="scoreResult"></div>
+        <div class="button-container">
+            <button id="shareTwitterButton" style="display: none;">ツイートする</button>
+            <button id="inviteDiscordButton" style="display: none;">ディスコード</button>
+        </div>
     </div>
-    <p id="sushi"></p>
-    <input type="text" id="input" disabled>
-    <button id="start-button" onclick="startGame()">スタート</button>
-  </div>
 
-  <script src="script.js"></script>
+
+    <script>
+        window.onload = function() {
+            var questionElement = document.getElementById("question");
+            var inputElement = document.getElementById("input");
+            var scoreElement = document.getElementById("score");
+            var timerElement = document.getElementById("timer");
+            var startButton = document.getElementById("startButton");
+            var restartButton = document.getElementById("restartButton");
+            var scoreResult = document.getElementById("scoreResult");
+            var shareTwitterButton = document.getElementById("shareTwitterButton");
+            var inviteDiscordButton = document.getElementById("inviteDiscordButton");
+
+
+            var questions = [
+                "こんにちは",
+                "ありがとう",
+                "さようなら",
+                "おはよう",
+                "こんばんは",
+                "おやすみ",
+                "お元気ですか",
+                "はじめまして",
+                "よろしくお願いします",
+                "おいしい",
+                "まったく、小学生は最高だぜ",
+                "まるで将棋だな",
+   "まったく、小学生は最高だぜ",
+    "まるで将棋だな",
+    "ツイッター",
+    "ツイッター少年",
+    "ロリコン",
+    "github",
+    "ウェブサイト",
+    "インスタグラム",
+    "テレグラム",
+    "キッズなんでも相談",
+    "ニフティ",
+    "グーグルディスコード",
+    "チャット",
+    "もるるる",
+    "ひとみボックス",
+    "ユーチューブ",
+    "タイピング",
+    "プログラミング",
+    "マウス",
+    "キーボードモニター",
+    "スピーカー",
+    "すし",
+    "たまご",
+    "ケーキ",
+    "マッキー",
+    "スクラッチ",
+    "ドッグ",
+    "中学校",
+    "小学校",
+    "ブラウザー",
+    "ドキュメント",
+    "アニメ",
+    "マンガ",
+    "このマンガがすごい",
+    "椅子",
+    "机",
+    "時計",
+    "サーキュレーター",
+    "タイプC",
+    "チョーク",
+    "水",
+    "ペン",
+    "学校",
+    "金魚みたいですね",
+    "交流室",
+    "どしたん",
+    "話聞こか",
+    "地震大丈夫?",
+    "たいあき",
+    "天下のK",
+    "今日もキミが好き",
+    "ぼくくうと",
+    "公文書偽造",
+    "メッキー",
+    "拡張機能",
+    "パイソン",
+    "ダイソー",
+    "セリア",
+    "ナイスエコ",
+    "レディアント",
+    "アセント",
+    "パール",
+    "ロータス",
+    "ヘイブン",
+    "ストア",
+    "ショップ",
+    "君は完璧で究極のゲッター",
+    "ダンス",
+    "野球",
+    "サッカー",
+    "ピアノ",
+    "ドッグ",
+    "ポイント",
+            ];
+
+
+            var score = 0;
+            var timeLeft = 60;
+            var timerId;
+
+
+            function startGame() {
+                startButton.disabled = true;
+                restartButton.style.display = "none";
+                inputElement.focus();
+
+
+                // 残り時間を表示するタイマー
+                timerId = setInterval(function() {
+                    timeLeft--;
+                    timerElement.textContent = timeLeft;
+                    if (timeLeft === 0) {
+                        endGame();
+                    }
+                }, 1000);
+
+
+                showQuestion();
+            }
+
+
+            function endGame() {
+                clearInterval(timerId);
+                inputElement.disabled = true;
+                startButton.disabled = false;
+                restartButton.style.display = "inline-block";
+                shareTwitterButton.style.display = "inline-block";
+                inviteDiscordButton.style.display = "inline-block";
+
+
+                // スコア結果を表示
+                scoreResult.textContent = "スコア: " + score;
+                scoreResult.style.display = "block";
+
+
+                // ページを下にスクロール
+                window.scrollTo(0, document.body.scrollHeight);
+            }
+
+
+            function showQuestion() {
+                var randomIndex = Math.floor(Math.random() * questions.length);
+                var question = questions[randomIndex];
+                questionElement.textContent = question;
+
+
+                inputElement.value = "";
+                inputElement.addEventListener("input", checkAnswer);
+            }
+
+
+            function checkAnswer() {
+                var input = inputElement.value;
+                var question = questionElement.textContent;
+
+
+                if (input === question) {
+                    score += 10;
+                    scoreElement.textContent = score;
+                    inputElement.removeEventListener("input", checkAnswer);
+                    showQuestion();
+                } else if (input.length >= question.length) {
+                    score--;
+                    scoreElement.textContent = score;
+                }
+            }
+
+
+            function restartGame() {
+                score = 0;
+                timeLeft = 60;
+                scoreElement.textContent = score;
+                timerElement.textContent = timeLeft;
+                scoreResult.style.display = "none";
+                restartButton.style.display = "none";
+                shareTwitterButton.style.display = "none";
+                inviteDiscordButton.style.display = "none";
+                inputElement.disabled = false;
+                startGame();
+            }
+
+
+            function shareOnTwitter() {
+                var scoreText = "スコア: " + score;
+                var tweetText = encodeURIComponent("私のタイピングゲームのスコアは「" + scoreText + "」でした！ #タイピングゲーム");
+                var tweetUrl = "https://twitter.com/intent/tweet?text=" + tweetText + "%20" + encodeURIComponent(location.href);
+                window.open(tweetUrl, "_blank");
+            }
+
+
+            function inviteToDiscord() {
+                var inviteUrl = "https://discord.gg/7Kbs4EYc5"; // 実際の招待リンクに置き換えてください
+                window.open(inviteUrl, "_blank");
+            }
+
+
+            startButton.addEventListener("click", startGame);
+            restartButton.addEventListener("click", restartGame);
+            shareTwitterButton.addEventListener("click", shareOnTwitter);
+            inviteDiscordButton.addEventListener("click", inviteToDiscord);
+        }
+    </script>
 </body>
 </html>

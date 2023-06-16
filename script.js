@@ -1,5 +1,4 @@
 const sushiNames = [
-  "寿司",
   "マグロ",
   "サーモン",
   "エビ",
@@ -8,11 +7,17 @@ const sushiNames = [
   "ユニ",
   "アナゴ",
   "ハマチ",
-  "サバ"
-  "キッズ"
-  "障害"
-  "ゆうと"
-  "タイムアイ"
+  "サバ",
+  "サーモンロール",
+  "カニカマ",
+  "イクラ",
+  "ネギトロ",
+  "ホタテ",
+  "ウニ",
+  "トロ",
+  "エンガワ",
+  "カンパチ",
+  "タイ"
 ];
 
 let currentSushiIndex = 0;
@@ -96,5 +101,3 @@ function convertToHiragana(text) {
     return String.fromCharCode(charCode);
   });
 }
-
-startGame();

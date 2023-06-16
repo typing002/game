@@ -296,6 +296,31 @@
             shareTwitterButton.addEventListener("click", shareOnTwitter);
             inviteDiscordButton.addEventListener("click", inviteToDiscord);
         }
+
+        function convertToHiragana(text) {
+  // カタカナをひらがなに変換
+  text = text.replace(/[\u30a1-\u30f6]/g, function(match) {
+    const chr = match.charCodeAt(0) - 0x60;
+    return String.fromCharCode(chr);
+  });
+
+  // 漢字をひらがなに変換
+  text = text.replace(/[\u4e00-\u9faf]/g, function(match) {
+    return String.fromCharCode(match.charCodeAt(0) + 0x4e00);
+  });
+
+  return text;
+}
+
+// ゲームで入力された漢字やカタカナのテキスト
+var inputText = "漢字やカタカナ";
+
+// ひらがなに変換
+var hiraganaText = convertToHiragana(inputText);
+
+// 変換結果を表示
+console.log(hiraganaText);
+
     </script>
 </body>
 </html>

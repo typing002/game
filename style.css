@@ -1,0 +1,49 @@
+﻿body {
+  text-align: center;
+  background-color: #f2f2f2;
+}
+
+
+h1 {
+  color: #333;
+}
+
+
+#game-container {
+  width: 400px;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+
+#score, #timer {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+
+#quote {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+
+#input {
+  font-size: 18px;
+  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
+.correct {
+  color: green;
+}
+
+
+.incorrect {
+  color: red;
+}

@@ -1,5 +1,5 @@
 const sushiNames = [
-  "たいむあい",
+  "寿司",
   "桃",
   "みつばち",
   "たまご",
@@ -35,11 +35,12 @@ function startGame() {
   inputElement.disabled = false;
   inputElement.focus();
   progressElement.textContent = "";
-  showNextSushi();
   startTimer();
   document.getElementById("start-button").disabled = true;
   // 寿司の名前を表示するための関数を呼び出す
   showNextSushi();
+  // 進行状況を表示するための要素を初期化
+  progressElement.textContent = "";
 }
 
 function showNextSushi() {
@@ -48,7 +49,9 @@ function showNextSushi() {
     return;
   }
 
-  sushiElement.textContent = sushiNames[currentSushiIndex];
+  const currentSushi = sushiNames[currentSushiIndex];
+  const hiraganaCurrentSushi = convertToHiragana(currentSushi);
+  sushiElement.textContent = hiraganaCurrentSushi;
 }
 
 function checkInput() {
@@ -100,7 +103,8 @@ function convertToHiragana(text) {
     const charCode = match.charCodeAt(0) - 0x60;
     return String.fromCharCode(charCode);
   }).replace(/[\u4e00-\u9fff]/g, function(match) {
-    return String.fromCharCode(match.charCodeAt(0) + 0x60);
+    const charCode = match.charCodeAt(0) + 0x60;
+    return String.fromCharCode(charCode);
   });
 }
 

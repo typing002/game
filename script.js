@@ -863,3 +863,7 @@ function convertToHiragana(text) {
     return String.fromCharCode(charCode);
   });
 }
+
+window.onload = function() {
+  document.getElementById("start-button").disabled = false;
+};

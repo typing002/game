@@ -32,10 +32,9 @@ function startGame() {
   inputElement.disabled = false;
   inputElement.focus();
   progressElement.textContent = "";
+  showNextSushi();
   startTimer();
   document.getElementById("start-button").disabled = true;
-  showNextSushi();
-  progressElement.textContent = "";
 }
 
 function showNextSushi() {
@@ -44,9 +43,7 @@ function showNextSushi() {
     return;
   }
 
-  const currentSushi = sushiNames[currentSushiIndex];
-  const hiraganaCurrentSushi = convertToHiragana(currentSushi);
-  sushiElement.textContent = hiraganaCurrentSushi;
+  sushiElement.textContent = sushiNames[currentSushiIndex];
 }
 
 function checkInput() {
@@ -69,7 +66,7 @@ function checkInput() {
     inputElement.classList.add("incorrect");
   }
 
-  progressElement.textContent = typedText + "  (" + hiraganaTypedText + ")";
+  progressElement.textContent = typedText;
 }
 
 function startTimer() {
@@ -94,34 +91,12 @@ function endGame() {
 }
 
 function convertToHiragana(text) {
-  const katakanaToHiragana = (char) => {
-    const katakanaStart = 0x30a1;
-    const hiraganaStart = 0x3041;
-    const katakanaEnd = 0x30f6;
-    const charCode = char.charCodeAt(0);
-    if (charCode >= katakanaStart && charCode <= katakanaEnd) {
-      return String.fromCharCode(charCode - (katakanaStart - hiraganaStart));
-    }
-    return char;
-  };
-
-  const kanjiToHiragana = (char) => {
-    const kanjiStart = 0x4e00;
-    const kanjiEnd = 0x9fff;
-    const hiraganaStart = 0x3041;
-    const charCode = char.charCodeAt(0);
-    if (charCode >= kanjiStart && charCode <= kanjiEnd) {
-      return String.fromCharCode(charCode + (hiraganaStart - kanjiStart));
-    }
-    return char;
-  };
-
-  return text
-    .split("")
-    .map((char) => katakanaToHiragana(kanjiToHiragana(char)))
-    .join("");
+  return text.replace(/[\u30a1-\u30f6]/g, function(match) {
+    const charCode = match.charCodeAt(0) - 0x60;
+    return String.fromCharCode(charCode);
+  });
 }
 
-window.onload = function () {
+window.onload = function() {
   document.getElementById("start-button").disabled = false;
 };

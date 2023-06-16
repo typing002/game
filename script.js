@@ -38,6 +38,8 @@ function startGame() {
   showNextSushi();
   startTimer();
   document.getElementById("start-button").disabled = true;
+  // 寿司の名前を表示するための関数を呼び出す
+  showNextSushi();
 }
 
 function showNextSushi() {
@@ -69,7 +71,7 @@ function checkInput() {
     inputElement.classList.add("incorrect");
   }
 
-  progressElement.textContent = typedText;
+  progressElement.textContent = typedText + "  (" + hiraganaTypedText + ")";
 }
 
 function startTimer() {
@@ -97,6 +99,8 @@ function convertToHiragana(text) {
   return text.replace(/[\u30a1-\u30f6]/g, function(match) {
     const charCode = match.charCodeAt(0) - 0x60;
     return String.fromCharCode(charCode);
+  }).replace(/[\u4e00-\u9fff]/g, function(match) {
+    return String.fromCharCode(match.charCodeAt(0) + 0x60);
   });
 }
 
